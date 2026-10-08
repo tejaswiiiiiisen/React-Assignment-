@@ -1,0 +1,24 @@
+.pricing {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: #ffffff;
+  width: 100%;
+  height: 48px;
+  margin-top: 16px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-weight: 600;
+}
+
+span {
+  font-size: 16px;
+}
+
+#str {
+  text-decoration: line-through;
+  opacity: 0.75;
+  font-size: 14px;
+}
