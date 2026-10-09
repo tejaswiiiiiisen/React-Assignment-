@@ -1,17 +1,19 @@
 import { useState } from "react";
 
 export default function Form({ addnewinfo }) {
-    let [formdata, setformdata] = useState({ username: "", email: "", mob: "", tech: "", text: "" })
+    let [formdata, setformdata] = useState({ username: "", email: "", mob: "", tech: "", text: "" });
+    
     let handel = (event) => {
         setformdata((data) => {
-            return { ...data, [event.target.name]: event.target.value }
-        })
-    }
+            return { ...data, [event.target.name]: event.target.value };
+        });
+    };
 
-    //validation use state
+    // Validation state
     let [isNameValid, setNameValid] = useState(true);
     let [isEmailValid, setEmailValid] = useState(true);
     let [isMobValid, setMobValid] = useState(true);
+
     let def = (event) => {
         event.preventDefault();
 
@@ -32,25 +34,14 @@ export default function Form({ addnewinfo }) {
         } else {
             setEmailValid(true);
         }
-        
 
         // Mobile Validation
-         if (formdata.mob === "") {
-            setMobValid(false);
-            valid = false;
-        } else if (!/^\d{10}$/.test(formdata.mob)) {
+        if (!/^\d{10}$/.test(formdata.mob.trim())) {
             setMobValid(false);
             valid = false;
         } else {
             setMobValid(true);
         }
-        if (!/^\d{10}$/.test(formdata.mob)) {
-            setMobValid(false);
-            valid = false;
-        } else {
-            setMobValid(true);
-        }
-       
 
         if (!valid) return;
 
@@ -63,46 +54,87 @@ export default function Form({ addnewinfo }) {
             tech: "",
             text: ""
         });
-    }
-    return <>
-        <form onSubmit={def}>
-            <input type="text" placeholder="Enter your full name" name="username" value={formdata.username} onChange={handel}/>
-            {!isNameValid && ( <p style={{ color: "red" }}> Name cannot be empty.</p>)}
-            <br></br>
-           
+    };
 
-
-            <input type="email" placeholder="Enter your Email" name="email" value={formdata.email} onChange={handel} />
-            {!isEmailValid && ( <p style={{ color: "red" }}> Email cannot be empty. </p>)}
-            <br></br>
+    return (
+        <form onSubmit={def} className="registration-form">
+            <h2 className="form-title">Student Registration</h2>
             
-            
+            <div className="form-group">
+                <label className="input-label">Full Name</label>
+                <input 
+                    type="text" 
+                    placeholder="e.g. Tejaswi Sen" 
+                    name="username" 
+                    value={formdata.username} 
+                    onChange={handel}
+                    className={!isNameValid ? "input-error" : ""}
+                />
+                {!isNameValid && <span className="error-msg">Name cannot be empty</span>}
+            </div>
 
-            <input type="tel" placeholder="Enter your Mob. No." name="mob" value={formdata.mob} onChange={handel} />
+            <div className="form-group">
+                <label className="input-label">Email Address</label>
+                <input 
+                    type="email" 
+                    placeholder="e.g. tejaswi@example.com" 
+                    name="email" 
+                    value={formdata.email} 
+                    onChange={handel} 
+                    className={!isEmailValid ? "input-error" : ""}
+                />
+                {!isEmailValid && <span className="error-msg">Email cannot be empty</span>}
+            </div>
 
-            {!isMobValid && (
-                <p style={{ color: "red" }}>
-                    {formdata.mob === ""
-                        ? "Mobile number cannot be empty."
-                        : "Mobile number must be exactly 10 digits."}
-                </p>
-            )}
-            <br></br>
-            <input id="mern" type="radio" value="MERN Stack" name="tech" checked={formdata.tech === "MERN Stack"} onChange={handel}></input>
-            <label htmlFor="mern">MERN Stack</label>
+            <div className="form-group">
+                <label className="input-label">Mobile Number</label>
+                <input 
+                    type="tel" 
+                    placeholder="10 digit number" 
+                    name="mob" 
+                    maxLength="10"
+                    value={formdata.mob} 
+                    onChange={handel} 
+                    className={!isMobValid ? "input-error" : ""}
+                />
+                {!isMobValid && (
+                    <span className="error-msg">
+                        {formdata.mob.trim() === "" ? "Mobile number cannot be empty" : "Must be exactly 10 digits"}
+                    </span>
+                )}
+            </div>
 
-            <input id="data" type="radio" value="Data Analytics" name="tech" checked={formdata.tech === "Data Analytics"} onChange={handel}></input>
-            <label htmlFor="data">Data Analytics</label>
+            <div className="form-group">
+                <label className="input-label">Select Technology</label>
+                <div className="radio-group">
+                    <label className="radio-label">
+                        <input id="mern" type="radio" value="MERN Stack" name="tech" checked={formdata.tech === "MERN Stack"} onChange={handel} />
+                        <span>MERN Stack</span>
+                    </label>
 
-            <input id="aiml" type="radio" value="AI/ML" name="tech" checked={formdata.tech === "AI/ML"} onChange={handel}></input>
-            <label htmlFor="aiml">AI/ML</label>
-            <br></br>
-           
+                    <label className="radio-label">
+                        <input id="data" type="radio" value="Data Analytics" name="tech" checked={formdata.tech === "Data Analytics"} onChange={handel} />
+                        <span>Data Analytics</span>
+                    </label>
 
-            <textarea type="text" placeholder="Enter Your Text" name="text" value={formdata.text} onChange={handel}></textarea>
-            <br></br>
+                    <label className="radio-label">
+                        <input id="aiml" type="radio" value="AI/ML" name="tech" checked={formdata.tech === "AI/ML"} onChange={handel} />
+                        <span>AI/ML</span>
+                    </label>
+                </div>
+            </div>
 
-            <button>Register</button>
+            <div className="form-group">
+                <label className="input-label">Message / Notes</label>
+                <textarea 
+                    placeholder="Write your query or message..." 
+                    name="text" 
+                    value={formdata.text} 
+                    onChange={handel}
+                ></textarea>
+            </div>
+
+            <button type="submit" className="submit-btn">Register</button>
         </form>
-    </>
+    );
 }
